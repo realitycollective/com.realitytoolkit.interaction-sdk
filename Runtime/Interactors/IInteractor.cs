@@ -1,6 +1,8 @@
 // Copyright (c) Reality Collective. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using RealityToolkit.InputSystem.Interfaces;
+
 namespace RealityToolkit.InteractionSDK.Interactors
 {
     /// <summary>
@@ -8,6 +10,9 @@ namespace RealityToolkit.InteractionSDK.Interactors
     /// </summary>
     public interface IInteractor
     {
-
+        /// <summary>
+        /// The registered <see cref="IMixedRealityInputSource"/> for this interactor.
+        /// </summary>
+        IMixedRealityInputSource InputSource { get; }
     }
 }

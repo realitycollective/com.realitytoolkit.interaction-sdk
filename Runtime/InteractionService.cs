@@ -33,11 +33,7 @@ namespace RealityToolkit.InteractionSDK
 
         private readonly List<IInteractor> interactors;
         private readonly List<IInteractable> interactables;
-        private IMixedRealityInputSystem inputSystem;
         private InteractorRegistrar interactorRegistrar;
-
-        protected IMixedRealityInputSystem InputSystem
-            => inputSystem ?? (inputSystem = ServiceManager.Instance.GetService<IMixedRealityInputSystem>());
 
         /// <inheritdoc/>
         public IReadOnlyList<IInteractor> Interactors => interactors;
@@ -53,7 +49,7 @@ namespace RealityToolkit.InteractionSDK
                 return;
             }
 
-            if (!ServiceManager.Instance.TryGetService(out inputSystem))
+            if (!ServiceManager.Instance.TryGetService<IMixedRealityInputSystem>(out _))
             {
                 Debug.LogError($"{nameof(InteractionService)} requires the {nameof(IMixedRealityInputSystem)} to work.");
                 return;
@@ -106,7 +102,8 @@ namespace RealityToolkit.InteractionSDK
         /// <inheritdoc/>
         public bool TryGetInteractor(IMixedRealityInputSource inputSource, out IInteractor interactor)
         {
-            throw new System.NotImplementedException();
+            interactor = interactors.FirstOrDefault(i => i.InputSource == inputSource);
+            return interactor != null;
         }
     }
 }
