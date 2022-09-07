@@ -6,6 +6,7 @@ using RealityCollective.ServiceFramework.Services;
 using RealityToolkit.InteractionSDK.Interactables;
 using RealityToolkit.InteractionSDK.Interactors;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RealityToolkit.InteractionSDK
 {
@@ -48,5 +49,8 @@ namespace RealityToolkit.InteractionSDK
 
         /// <inheritdoc/>
         public void Remove(IInteractable interactable) => interactables.SafeRemoveListItem(interactable);
+
+        /// <inheritdoc/>
+        public IEnumerable<IInteractable> GetByLabel(string label) => interactables.Where(i => !string.IsNullOrWhiteSpace(label) && string.Equals(i.Label, label));
     }
 }

@@ -47,5 +47,12 @@ namespace RealityToolkit.InteractionSDK
         /// </summary>
         /// <param name="interactable">The <see cref="IInteractable"/> to remove.</param>
         void Remove(IInteractable interactable);
+
+        /// <summary>
+        /// Gets all known <see cref="IInteractable"/>s that have the <paramref name="label"/> provided.
+        /// </summary>
+        /// <param name="label">The label to look for.</param>
+        /// <returns>Collection of <see cref="IInteractable"/>s with the requested label.</returns>
+        IEnumerable<IInteractable> GetByLabel(string label);
     }
 }

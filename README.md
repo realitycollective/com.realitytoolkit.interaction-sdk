@@ -18,7 +18,7 @@ TODO
 The simplest way to start using the Interaction SDK package in your project is via OpenUPM. Visit [OpenUPM](https://openupm.com/docs/) to learn more about it. Once you have the OpenUPM CLI set up use the following command to add the package to your project:
 
 ```
-`openupm add com.realitytoolkit.interaction-sdk`
+openupm add com.realitytoolkit.interaction-sdk
 ```
 
 > For more details on using [OpenUPM CLI, check the docs here](https://github.com/openupm/openupm-cli#installation).
@@ -28,5 +28,5 @@ The simplest way to start using the Interaction SDK package in your project is v
 | branch | build status |
 | --- | --- |
 | main | [![main](https://github.com/realitycollective/com.realitytoolkit.interaction-sdk/actions/workflows/buildupmpackages.yml/badge.svg?branch=main)](https://github.com/realitycollective/com.realitytoolkit.interaction-sdk/actions/workflows/buildupmpackages.yml) |
-| development | [![development](https://github.com/realitycollective/com.realitytoolkit.com.realitytoolkit.interaction-sdk/actions/workflows/buildupmpackages.yml/badge.svg?branch=development)](https://github.com/realitycollective/com.realitytoolkit.interaction-sdk/actions/workflows/buildupmpackages.yml) |
+| development | [![development](https://github.com/realitycollective/com.realitytoolkit.interaction-sdk/actions/workflows/buildupmpackages.yml/badge.svg?branch=development)](https://github.com/realitycollective/com.realitytoolkit.interaction-sdk/actions/workflows/buildupmpackages.yml) |
 

@@ -9,6 +9,12 @@ namespace RealityToolkit.InteractionSDK.Interactables
     public interface IInteractable
     {
         /// <summary>
+        /// Gets the <see cref="IInteractable"/>s label that may be used to
+        /// identify the interactable or categorize it
+        /// </summary>
+        string Label { get; }
+
+        /// <summary>
         /// Is the interactablel valid for interaciton?
         /// </summary>
         bool IsValid { get; }
@@ -22,5 +28,10 @@ namespace RealityToolkit.InteractionSDK.Interactables
         /// Does the interactable allow far interaction?
         /// </summary>
         bool FarInteractionEnabled { get; }
+
+        /// <summary>
+        /// The current <see cref="InteractionState"/> of the <see cref="IInteractable"/>.
+        /// </summary>
+        InteractionState State { get; }
     }
 }
