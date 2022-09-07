@@ -20,7 +20,11 @@ namespace RealityToolkit.InteractionSDK.Interactables
         private FarInteractable farInteractable;
 
         /// <inheritdoc/>
-        public string Label => label;
+        public string Label
+        {
+            get => label;
+            set => label = value;
+        }
 
         /// <inheritdoc/>
         public bool IsValid => isActiveAndEnabled && (NearInteractionEnabled || FarInteractionEnabled);
@@ -43,6 +47,7 @@ namespace RealityToolkit.InteractionSDK.Interactables
             {
                 Debug.LogError($"{nameof(Interactable)} requires the {nameof(IInteractionService)} to work.");
                 this.Destroy();
+                return;
             }
 
             interactionService.Add(this);
@@ -55,6 +60,7 @@ namespace RealityToolkit.InteractionSDK.Interactables
         {
             nearInteractable = GetComponent<NearInteractable>();
             farInteractable = GetComponent<FarInteractable>();
+            State = InteractionState.Normal;
         }
 
         /// <summary>

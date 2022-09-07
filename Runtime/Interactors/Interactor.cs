@@ -21,6 +21,7 @@ namespace RealityToolkit.InteractionSDK.Interactors
             {
                 Debug.LogError($"{nameof(Interactor)} requires the {nameof(IInteractionService)} to work.");
                 this.Destroy();
+                return;
             }
 
             interactionService.Add(this);

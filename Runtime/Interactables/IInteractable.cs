@@ -9,10 +9,10 @@ namespace RealityToolkit.InteractionSDK.Interactables
     public interface IInteractable
     {
         /// <summary>
-        /// Gets the <see cref="IInteractable"/>s label that may be used to
+        /// Gets or sets the <see cref="IInteractable"/>s label that may be used to
         /// identify the interactable or categorize it
         /// </summary>
-        string Label { get; }
+        string Label { get; set; }
 
         /// <summary>
         /// Is the interactablel valid for interaciton?
