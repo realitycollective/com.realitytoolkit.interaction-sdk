@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using RealityCollective.ServiceFramework.Interfaces;
+using RealityToolkit.InputSystem.Interfaces;
 using RealityToolkit.InteractionSDK.Interactables;
 using RealityToolkit.InteractionSDK.Interactors;
 using System.Collections.Generic;
@@ -52,7 +53,16 @@ namespace RealityToolkit.InteractionSDK
         /// Gets all known <see cref="IInteractable"/>s that have the <paramref name="label"/> provided.
         /// </summary>
         /// <param name="label">The label to look for.</param>
-        /// <returns>Collection of <see cref="IInteractable"/>s with the requested label.</returns>
-        IEnumerable<IInteractable> GetByLabel(string label);
+        /// <param name="interactables">Collection of <see cref="IInteractable"/>s with the requested label.</param>
+        /// <returns><c>true, if any <see cref="IInteractable"/>s were found.</c></returns>
+        bool TryGetInteractableByLabel(string label, out IEnumerable<IInteractable> interactables);
+
+        /// <summary>
+        /// Gets the <see cref="IInteractor"/> for the <paramref name="inputSource"/>.
+        /// </summary>
+        /// <param name="inputSource">The <see cref="IMixedRealityInputSource"/> to find the <see cref="IInteractor"/> for.</param>
+        /// <param name="interactor">The <see cref="IInteractor"/> found.</param>
+        /// <returns><c>true</c>, if an <see cref="IInteractor"/> was found.</returns>
+        bool TryGetInteractor(IMixedRealityInputSource inputSource, out IInteractor interactor);
     }
 }

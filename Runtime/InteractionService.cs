@@ -3,10 +3,12 @@
 
 using RealityCollective.Extensions;
 using RealityCollective.ServiceFramework.Services;
+using RealityToolkit.InputSystem.Interfaces;
 using RealityToolkit.InteractionSDK.Interactables;
 using RealityToolkit.InteractionSDK.Interactors;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace RealityToolkit.InteractionSDK
 {
@@ -31,12 +33,49 @@ namespace RealityToolkit.InteractionSDK
 
         private readonly List<IInteractor> interactors;
         private readonly List<IInteractable> interactables;
+        private IMixedRealityInputSystem inputSystem;
+        private InteractorRegistrar interactorRegistrar;
+
+        protected IMixedRealityInputSystem InputSystem
+            => inputSystem ?? (inputSystem = ServiceManager.Instance.GetService<IMixedRealityInputSystem>());
 
         /// <inheritdoc/>
         public IReadOnlyList<IInteractor> Interactors => interactors;
 
         /// <inheritdoc/>
         public IReadOnlyList<IInteractable> Interactables => interactables;
+
+        /// <inheritdoc/>
+        public override void Initialize()
+        {
+            if (!Application.isPlaying)
+            {
+                return;
+            }
+
+            if (!ServiceManager.Instance.TryGetService(out inputSystem))
+            {
+                Debug.LogError($"{nameof(InteractionService)} requires the {nameof(IMixedRealityInputSystem)} to work.");
+                return;
+            }
+
+            interactorRegistrar = new GameObject($"{nameof(InteractionService)}.{nameof(InteractorRegistrar)}").AddComponent<InteractorRegistrar>();
+            if (ServiceManager.Instance.ActiveProfile.DoNotDestroyServiceManagerOnLoad)
+            {
+                interactorRegistrar.gameObject.DontDestroyOnLoad();
+            }
+        }
+
+        /// <inheritdoc/>
+        public override void Destroy()
+        {
+            if (interactorRegistrar.gameObject.IsNotNull())
+            {
+                interactorRegistrar.gameObject.Destroy();
+            }
+
+            base.Destroy();
+        }
 
         /// <inheritdoc/>
         public void Add(IInteractor interactor) => interactors.EnsureListItem(interactor);
@@ -51,6 +90,23 @@ namespace RealityToolkit.InteractionSDK
         public void Remove(IInteractable interactable) => interactables.SafeRemoveListItem(interactable);
 
         /// <inheritdoc/>
-        public IEnumerable<IInteractable> GetByLabel(string label) => interactables.Where(i => !string.IsNullOrWhiteSpace(label) && string.Equals(i.Label, label));
+        public bool TryGetInteractableByLabel(string label, out IEnumerable<IInteractable> interactables)
+        {
+            var results = this.interactables.Where(i => !string.IsNullOrWhiteSpace(label) && string.Equals(i.Label, label));
+            if (results.Any())
+            {
+                interactables = results;
+                return true;
+            }
+
+            interactables = null;
+            return false;
+        }
+
+        /// <inheritdoc/>
+        public bool TryGetInteractor(IMixedRealityInputSource inputSource, out IInteractor interactor)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
