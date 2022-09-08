@@ -1,3 +1,6 @@
+// Copyright (c) Reality Collective. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using RealityCollective.Extensions;
 using RealityCollective.ServiceFramework.Services;
 using RealityToolkit.EventDatum.Input;
@@ -9,6 +12,10 @@ using UnityEngine;
 
 namespace RealityToolkit.InteractionSDK.Interactors
 {
+    /// <summary>
+    /// The <see cref="InteractorRegistrar"/> is responsible for automatic detection of
+    /// new <see cref="IInteractor"/>s and manages their registration with the <see cref="IInteractionService"/>.
+    /// </summary>
     public class InteractorRegistrar : InputSystemGlobalListener, IMixedRealitySourceStateHandler
     {
         private IMixedRealityInputSystem inputService;

@@ -18,6 +18,7 @@ namespace RealityToolkit.InteractionSDK.Interactables
 
         private NearInteractable nearInteractable;
         private FarInteractable farInteractable;
+        private IInteractionService interactionService;
 
         /// <inheritdoc/>
         public string Label
@@ -30,10 +31,10 @@ namespace RealityToolkit.InteractionSDK.Interactables
         public bool IsValid => isActiveAndEnabled && (NearInteractionEnabled || FarInteractionEnabled);
 
         /// <inheritdoc/>
-        public bool NearInteractionEnabled => nearInteractable.IsNotNull();
+        public bool NearInteractionEnabled => interactionService.NearInteractionEnabled && nearInteractable.IsNotNull();
 
         /// <inheritdoc/>
-        public bool FarInteractionEnabled => farInteractable.IsNotNull();
+        public bool FarInteractionEnabled => interactionService.FarInteractionEnabled && farInteractable.IsNotNull();
 
         /// <inheritdoc/>
         public InteractionState State { get; private set; }
@@ -43,7 +44,7 @@ namespace RealityToolkit.InteractionSDK.Interactables
         /// </summary>
         private void Awake()
         {
-            if (!ServiceManager.Instance.TryGetService<IInteractionService>(out var interactionService))
+            if (!ServiceManager.Instance.TryGetService(out interactionService))
             {
                 Debug.LogError($"{nameof(Interactable)} requires the {nameof(IInteractionService)} to work.");
                 this.Destroy();

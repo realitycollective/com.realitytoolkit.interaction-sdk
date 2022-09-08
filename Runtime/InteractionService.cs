@@ -29,11 +29,19 @@ namespace RealityToolkit.InteractionSDK
         {
             interactors = new List<IInteractor>();
             interactables = new List<IInteractable>();
+            NearInteractionEnabled = profile.NearInteraction;
+            FarInteractionEnabled = profile.FarInteraction;
         }
 
         private readonly List<IInteractor> interactors;
         private readonly List<IInteractable> interactables;
         private InteractorRegistrar interactorRegistrar;
+
+        /// <inheritdoc/>
+        public bool NearInteractionEnabled { get; set; }
+
+        /// <inheritdoc/>
+        public bool FarInteractionEnabled { get; set; }
 
         /// <inheritdoc/>
         public IReadOnlyList<IInteractor> Interactors => interactors;
@@ -65,7 +73,7 @@ namespace RealityToolkit.InteractionSDK
         /// <inheritdoc/>
         public override void Destroy()
         {
-            if (interactorRegistrar.gameObject.IsNotNull())
+            if (interactorRegistrar.IsNotNull())
             {
                 interactorRegistrar.gameObject.Destroy();
             }
@@ -86,7 +94,7 @@ namespace RealityToolkit.InteractionSDK
         public void Remove(IInteractable interactable) => interactables.SafeRemoveListItem(interactable);
 
         /// <inheritdoc/>
-        public bool TryGetInteractableByLabel(string label, out IEnumerable<IInteractable> interactables)
+        public bool TryGetInteractablesByLabel(string label, out IEnumerable<IInteractable> interactables)
         {
             var results = this.interactables.Where(i => !string.IsNullOrWhiteSpace(label) && string.Equals(i.Label, label));
             if (results.Any())

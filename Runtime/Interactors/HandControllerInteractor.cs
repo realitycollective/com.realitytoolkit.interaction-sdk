@@ -3,8 +3,9 @@
 
 namespace RealityToolkit.InteractionSDK.Interactors
 {
-    public class HandControllerInteractor : ControllerInteractor, IInteractor
-    {
-
-    }
+    /// <summary>
+    /// A <see cref="HandControllerInteractor"/> is an <see cref="IInteractor"/> that is operated
+    /// by a hand tracking input device.
+    /// </summary>
+    public class HandControllerInteractor : ControllerInteractor, IControllerInteractor { }
 }

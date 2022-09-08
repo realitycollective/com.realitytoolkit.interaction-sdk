@@ -16,6 +16,16 @@ namespace RealityToolkit.InteractionSDK
     public interface IInteractionService : IService
     {
         /// <summary>
+        /// Gets or sets whether near interaction should work or not.
+        /// </summary>
+        bool NearInteractionEnabled { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether far interaction should work or not.
+        /// </summary>
+        bool FarInteractionEnabled { get; set; }
+
+        /// <summary>
         /// Available <see cref="IInteractor"/>s in the scene.
         /// </summary>
         IReadOnlyList<IInteractor> Interactors { get; }
@@ -40,7 +50,7 @@ namespace RealityToolkit.InteractionSDK
         /// <summary>
         /// Adds an <see cref="IInteractable"/> to the service's registry.
         /// </summary>
-        /// <param name="interactable">The <see cref="IInteIInteractableractor"/> to add.</param>
+        /// <param name="interactable">The <see cref="IInteractable"/> to add.</param>
         void Add(IInteractable interactable);
 
         /// <summary>
@@ -55,7 +65,7 @@ namespace RealityToolkit.InteractionSDK
         /// <param name="label">The label to look for.</param>
         /// <param name="interactables">Collection of <see cref="IInteractable"/>s with the requested label.</param>
         /// <returns><c>true, if any <see cref="IInteractable"/>s were found.</c></returns>
-        bool TryGetInteractableByLabel(string label, out IEnumerable<IInteractable> interactables);
+        bool TryGetInteractablesByLabel(string label, out IEnumerable<IInteractable> interactables);
 
         /// <summary>
         /// Gets the <see cref="IInteractor"/> for the <paramref name="inputSource"/>.

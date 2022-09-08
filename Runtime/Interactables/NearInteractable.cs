@@ -6,7 +6,8 @@ using UnityEngine;
 namespace RealityToolkit.InteractionSDK.Interactables
 {
     /// <summary>
-    /// An <see cref="NearInteractable"/> marks an object that can be interacted with from close up.
+    /// An <see cref="NearInteractable"/> marks an <see cref="Interactable"/> that can be interacted with from close up.
     /// </summary>
+    [RequireComponent(typeof(Interactable))]
     public class NearInteractable : MonoBehaviour { }
 }

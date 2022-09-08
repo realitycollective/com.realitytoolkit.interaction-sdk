@@ -6,7 +6,8 @@ using UnityEngine;
 namespace RealityToolkit.InteractionSDK.Interactables
 {
     /// <summary>
-    /// An <see cref="FarInteractable"/> marks an object that can be interacted with from a distance.
+    /// An <see cref="FarInteractable"/> marks an <see cref="Interactable"/> that can be interacted with from a distance.
     /// </summary>
+    [RequireComponent(typeof(Interactable))]
     public class FarInteractable : MonoBehaviour { }
 }
