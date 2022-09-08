@@ -29,6 +29,7 @@ namespace RealityToolkit.InteractionSDK.Interactables
         private IInteractionService interactionService;
         private InteractionState currentState;
         private readonly Dictionary<uint, IInteractor> focusingInteractors = new Dictionary<uint, IInteractor>();
+        private readonly Dictionary<uint, IInteractor> selectingInteractors = new Dictionary<uint, IInteractor>();
 
         /// <inheritdoc/>
         public string Label
@@ -109,6 +110,7 @@ namespace RealityToolkit.InteractionSDK.Interactables
         public void OnReset()
         {
             focusingInteractors.Clear();
+            selectingInteractors.Clear();
             State = InteractionState.Normal;
         }
 
@@ -135,13 +137,31 @@ namespace RealityToolkit.InteractionSDK.Interactables
                 focusingInteractors.Count == 0 &&
                 State == InteractionState.Focused)
             {
-                OnReset();
+                State = InteractionState.Normal;
             }
         }
 
         /// <summary>
-        /// The <see cref="Interactable"/> is now being interacted with.
+        /// The <see cref="Interactable"/> is now selected by <paramref name="interactor"/>.
         /// </summary>
-        public void OnSelected() => State = InteractionState.Selected;
+        public void OnSelected(IInteractor interactor)
+        {
+            selectingInteractors.EnsureDictionaryItem(interactor.InputSource.SourceId, interactor, true);
+            State = InteractionState.Selected;
+        }
+
+        /// <summary>
+        /// The <see cref="Interactable"/> is no longer selected by <paramref name="interactor"/>.
+        /// </summary>
+        public void OnDeselected(IInteractor interactor)
+        {
+            selectingInteractors.TrySafeRemoveDictionaryItem(interactor.InputSource.SourceId);
+            if (selectingInteractors.Count > 0)
+            {
+                return;
+            }
+
+            State = focusingInteractors.Count == 0 ? InteractionState.Normal : InteractionState.Focused;
+        }
     }
 }
