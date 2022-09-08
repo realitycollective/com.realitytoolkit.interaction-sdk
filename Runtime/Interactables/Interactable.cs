@@ -3,6 +3,8 @@
 
 using RealityCollective.Extensions;
 using RealityCollective.ServiceFramework.Services;
+using RealityToolkit.InteractionSDK.Interactors;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -26,6 +28,7 @@ namespace RealityToolkit.InteractionSDK.Interactables
         private FarInteractable farInteractable;
         private IInteractionService interactionService;
         private InteractionState currentState;
+        private readonly Dictionary<uint, IInteractor> focusingInteractors = new Dictionary<uint, IInteractor>();
 
         /// <inheritdoc/>
         public string Label
@@ -83,7 +86,8 @@ namespace RealityToolkit.InteractionSDK.Interactables
         {
             nearInteractable = GetComponent<NearInteractable>();
             farInteractable = GetComponent<FarInteractable>();
-            State = InteractionState.Normal;
+
+            OnReset();
         }
 
         /// <summary>
@@ -91,13 +95,53 @@ namespace RealityToolkit.InteractionSDK.Interactables
         /// </summary>
         private void OnDestroy()
         {
-            if (ServiceManager.Instance == null ||
-                !ServiceManager.Instance.TryGetService<IInteractionService>(out var interactionService))
+            if (interactionService == null)
             {
                 return;
             }
 
             interactionService.Remove(this);
         }
+
+        /// <summary>
+        /// The <see cref="Interactable"/> interaction state was reset.
+        /// </summary>
+        public void OnReset()
+        {
+            focusingInteractors.Clear();
+            State = InteractionState.Normal;
+        }
+
+        /// <summary>
+        /// The <see cref="Interactable"/> is focused by <paramref name="interactor"/>.
+        /// </summary>
+        /// <param name="interactor">The <see cref="IInteractor"/> focusing the object.</param>
+        public void OnFocused(IInteractor interactor)
+        {
+            focusingInteractors.EnsureDictionaryItem(interactor.InputSource.SourceId, interactor, true);
+            if (State != InteractionState.Selected)
+            {
+                State = InteractionState.Focused;
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="Interactable"/> was unfocused by <paramref name="interactor"/>.
+        /// </summary>
+        /// <param name="interactor">The <see cref="IInteractor"/> that unfocused the object.</param>
+        public void OnUnfocused(IInteractor interactor)
+        {
+            if (focusingInteractors.TrySafeRemoveDictionaryItem(interactor.InputSource.SourceId) &&
+                focusingInteractors.Count == 0 &&
+                State == InteractionState.Focused)
+            {
+                OnReset();
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="Interactable"/> is now being interacted with.
+        /// </summary>
+        public void OnSelected() => State = InteractionState.Selected;
     }
 }
