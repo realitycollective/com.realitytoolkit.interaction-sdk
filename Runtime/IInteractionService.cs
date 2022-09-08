@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using RealityCollective.ServiceFramework.Interfaces;
+using RealityToolkit.InputSystem.Definitions;
 using RealityToolkit.InputSystem.Interfaces;
 using RealityToolkit.InteractionSDK.Interactables;
 using RealityToolkit.InteractionSDK.Interactors;
@@ -24,6 +25,16 @@ namespace RealityToolkit.InteractionSDK
         /// Gets or sets whether far interaction should work or not.
         /// </summary>
         bool FarInteractionEnabled { get; set; }
+
+        /// <summary>
+        /// The global input action used to select things.
+        /// </summary>
+        MixedRealityInputAction SelectInputAction { get; }
+
+        /// <summary>
+        /// The global input action used to grab things.
+        /// </summary>
+        MixedRealityInputAction GrabInputAction { get; }
 
         /// <summary>
         /// Available <see cref="IInteractor"/>s in the scene.
