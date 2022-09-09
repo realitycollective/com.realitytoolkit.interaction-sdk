@@ -3,6 +3,9 @@
 
 using RealityCollective.Extensions;
 using RealityCollective.ServiceFramework.Services;
+using RealityToolkit.EventDatum.Input;
+using RealityToolkit.InputSystem.Definitions;
+using RealityToolkit.InputSystem.Interfaces.Handlers;
 using RealityToolkit.InteractionSDK.Interactors;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,11 +16,15 @@ namespace RealityToolkit.InteractionSDK.Interactables
     /// <summary>
     /// An <see cref="Interactable"/> marks an object that can be interacted with.
     /// </summary>
-    public class Interactable : MonoBehaviour, IInteractable
+    public class Interactable : MonoBehaviour, IInteractable, IMixedRealityInputHandler
     {
         [SerializeField]
         [Tooltip("Optional label that may be used to identify the interactable or categorize it.")]
         private string label = null;
+
+        [SerializeField]
+        [Tooltip("The input action used to interact with this interactable.")]
+        private MixedRealityInputAction inputAction = MixedRealityInputAction.None;
 
         [Space]
         [SerializeField]
@@ -26,8 +33,8 @@ namespace RealityToolkit.InteractionSDK.Interactables
 
         private NearInteractable nearInteractable;
         private FarInteractable farInteractable;
-        private IInteractionService interactionService;
         private InteractionState currentState;
+        private IInteractionService interactionService;
         private readonly Dictionary<uint, IInteractor> focusingInteractors = new Dictionary<uint, IInteractor>();
         private readonly Dictionary<uint, IInteractor> selectingInteractors = new Dictionary<uint, IInteractor>();
 
@@ -107,7 +114,7 @@ namespace RealityToolkit.InteractionSDK.Interactables
         /// <summary>
         /// The <see cref="Interactable"/> interaction state was reset.
         /// </summary>
-        public void OnReset()
+        private void OnReset()
         {
             focusingInteractors.Clear();
             selectingInteractors.Clear();
@@ -144,7 +151,7 @@ namespace RealityToolkit.InteractionSDK.Interactables
         /// <summary>
         /// The <see cref="Interactable"/> is now selected by <paramref name="interactor"/>.
         /// </summary>
-        public void OnSelected(IInteractor interactor)
+        protected void OnSelected(IInteractor interactor)
         {
             selectingInteractors.EnsureDictionaryItem(interactor.InputSource.SourceId, interactor, true);
             State = InteractionState.Selected;
@@ -153,7 +160,7 @@ namespace RealityToolkit.InteractionSDK.Interactables
         /// <summary>
         /// The <see cref="Interactable"/> is no longer selected by <paramref name="interactor"/>.
         /// </summary>
-        public void OnDeselected(IInteractor interactor)
+        protected void OnDeselected(IInteractor interactor)
         {
             selectingInteractors.TrySafeRemoveDictionaryItem(interactor.InputSource.SourceId);
             if (selectingInteractors.Count > 0)
@@ -162,6 +169,32 @@ namespace RealityToolkit.InteractionSDK.Interactables
             }
 
             State = focusingInteractors.Count == 0 ? InteractionState.Normal : InteractionState.Focused;
+        }
+
+        /// <inheritdoc/>
+        public void OnInputDown(InputEventData eventData)
+        {
+            if (eventData.used ||
+                eventData.MixedRealityInputAction != inputAction ||
+                !interactionService.TryGetInteractor(eventData.InputSource, out var interactor))
+            {
+                return;
+            }
+
+            eventData.Use();
+            OnSelected(interactor);
+        }
+
+        /// <inheritdoc/>
+        public void OnInputUp(InputEventData eventData)
+        {
+            if (eventData.MixedRealityInputAction != inputAction)
+            {
+                return;
+            }
+
+            interactionService.TryGetInteractor(eventData.InputSource, out var interactor);
+            OnDeselected(interactor);
         }
     }
 }

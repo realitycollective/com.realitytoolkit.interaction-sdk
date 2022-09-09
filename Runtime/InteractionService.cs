@@ -3,7 +3,6 @@
 
 using RealityCollective.Extensions;
 using RealityCollective.ServiceFramework.Services;
-using RealityToolkit.InputSystem.Definitions;
 using RealityToolkit.InputSystem.Interfaces;
 using RealityToolkit.InteractionSDK.Interactables;
 using RealityToolkit.InteractionSDK.Interactors;
@@ -32,8 +31,6 @@ namespace RealityToolkit.InteractionSDK
             interactables = new List<IInteractable>();
             NearInteractionEnabled = profile.NearInteraction;
             FarInteractionEnabled = profile.FarInteraction;
-            SelectInputAction = profile.SelectInputAction;
-            GrabInputAction = profile.GrabInputAction;
         }
 
         private readonly List<IInteractor> interactors;
@@ -45,12 +42,6 @@ namespace RealityToolkit.InteractionSDK
 
         /// <inheritdoc/>
         public bool FarInteractionEnabled { get; set; }
-
-        /// <inheritdoc/>
-        public MixedRealityInputAction SelectInputAction { get; }
-
-        /// <inheritdoc/>
-        public MixedRealityInputAction GrabInputAction { get; }
 
         /// <inheritdoc/>
         public IReadOnlyList<IInteractor> Interactors => interactors;

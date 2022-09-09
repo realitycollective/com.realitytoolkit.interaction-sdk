@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using RealityCollective.ServiceFramework.Definitions;
-using RealityToolkit.InputSystem.Definitions;
 using UnityEngine;
 
 namespace RealityToolkit.InteractionSDK
@@ -30,24 +29,5 @@ namespace RealityToolkit.InteractionSDK
         /// Should far interaction be enabled at startup?
         /// </summary>
         public bool FarInteraction => farInteraction;
-
-        [Header("Global Input Actions")]
-        [SerializeField]
-        [Tooltip("The global input action used to select things.")]
-        private MixedRealityInputAction selectInputAction = MixedRealityInputAction.None;
-
-        /// <summary>
-        /// The global input action used to select things.
-        /// </summary>
-        public MixedRealityInputAction SelectInputAction => selectInputAction;
-
-        [SerializeField]
-        [Tooltip("The global input action used to grab things.")]
-        private MixedRealityInputAction grabInputAction = MixedRealityInputAction.None;
-
-        /// <summary>
-        /// The global input action used to grab things.
-        /// </summary>
-        public MixedRealityInputAction GrabInputAction => grabInputAction;
     }
 }

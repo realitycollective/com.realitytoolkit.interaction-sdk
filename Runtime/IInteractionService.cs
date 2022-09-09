@@ -27,16 +27,6 @@ namespace RealityToolkit.InteractionSDK
         bool FarInteractionEnabled { get; set; }
 
         /// <summary>
-        /// The global input action used to select things.
-        /// </summary>
-        MixedRealityInputAction SelectInputAction { get; }
-
-        /// <summary>
-        /// The global input action used to grab things.
-        /// </summary>
-        MixedRealityInputAction GrabInputAction { get; }
-
-        /// <summary>
         /// Available <see cref="IInteractor"/>s in the scene.
         /// </summary>
         IReadOnlyList<IInteractor> Interactors { get; }
