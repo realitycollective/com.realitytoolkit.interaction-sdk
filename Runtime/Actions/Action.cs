@@ -19,13 +19,9 @@ namespace RealityToolkit.InteractionSDK.Actions
         protected virtual void Awake()
         {
             Interactable = GetComponent<IInteractable>();
-            enabled = false;
         }
 
         /// <inheritdoc/>
-        public virtual void Activate() => enabled = true;
-
-        /// <inheritdoc/>
-        public virtual void OnReset() => enabled = false;
+        public abstract void OnStateChanged(InteractionState state);
     }
 }

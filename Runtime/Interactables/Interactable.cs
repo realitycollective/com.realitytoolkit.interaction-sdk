@@ -28,13 +28,19 @@ namespace RealityToolkit.InteractionSDK.Interactables
         [Tooltip("The input action used to interact with this interactable.")]
         private MixedRealityInputAction inputAction = MixedRealityInputAction.None;
 
+        [SerializeField]
+        [Tooltip("Should near interaction be enabled at startup?")]
+        private bool nearInteraction = true;
+
+        [SerializeField]
+        [Tooltip("Should far interaction be enabled at startup?")]
+        private bool farInteraction = true;
+
         [Space]
         [SerializeField]
         [Tooltip("Event raised whenever the interactable's state has changed.")]
         private UnityEvent<InteractionState> stateChanged = null;
 
-        private NearInteractable nearInteractable;
-        private FarInteractable farInteractable;
         private InteractionState currentState;
         private IInteractionService interactionService;
         private readonly Dictionary<uint, IInteractor> focusingInteractors = new Dictionary<uint, IInteractor>();
@@ -52,10 +58,10 @@ namespace RealityToolkit.InteractionSDK.Interactables
         public bool IsValid => isActiveAndEnabled && (NearInteractionEnabled || FarInteractionEnabled);
 
         /// <inheritdoc/>
-        public bool NearInteractionEnabled => interactionService.NearInteractionEnabled && nearInteractable.IsNotNull();
+        public bool NearInteractionEnabled => interactionService.NearInteractionEnabled && nearInteraction;
 
         /// <inheritdoc/>
-        public bool FarInteractionEnabled => interactionService.FarInteractionEnabled && farInteractable.IsNotNull();
+        public bool FarInteractionEnabled => interactionService.FarInteractionEnabled && farInteraction;
 
         /// <inheritdoc/>
         public InteractionState State
@@ -65,6 +71,7 @@ namespace RealityToolkit.InteractionSDK.Interactables
             {
                 currentState = value;
                 stateChanged?.Invoke(currentState);
+                UpdateActions();
             }
         }
 
@@ -101,9 +108,6 @@ namespace RealityToolkit.InteractionSDK.Interactables
         /// </summary>
         private void OnEnable()
         {
-            nearInteractable = GetComponent<NearInteractable>();
-            farInteractable = GetComponent<FarInteractable>();
-
             OnReset();
         }
 
@@ -128,6 +132,17 @@ namespace RealityToolkit.InteractionSDK.Interactables
             focusingInteractors.Clear();
             selectingInteractors.Clear();
             State = InteractionState.Normal;
+        }
+
+        /// <summary>
+        /// Updates all <see cref="IAction"/>s on the <see cref="IInteractable"/>.
+        /// </summary>
+        private void UpdateActions()
+        {
+            for (var i = 0; i < actions.Count; i++)
+            {
+                actions[i].OnStateChanged(currentState);
+            }
         }
 
         /// <summary>
@@ -171,11 +186,6 @@ namespace RealityToolkit.InteractionSDK.Interactables
         {
             selectingInteractors.EnsureDictionaryItem(interactor.InputSource.SourceId, interactor, true);
             State = InteractionState.Selected;
-
-            for (var i = 0; i < actions.Count; i++)
-            {
-                actions[i].Activate();
-            }
         }
 
         /// <summary>
@@ -190,11 +200,6 @@ namespace RealityToolkit.InteractionSDK.Interactables
             }
 
             State = focusingInteractors.Count == 0 ? InteractionState.Normal : InteractionState.Focused;
-
-            for (var i = 0; i < actions.Count; i++)
-            {
-                actions[i].OnReset();
-            }
         }
 
         /// <inheritdoc/>
