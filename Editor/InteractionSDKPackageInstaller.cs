@@ -21,13 +21,13 @@ namespace RealityToolkit.InteractionSDK.Editor
             EditorApplication.delayCall += CheckPackage;
         }
 
-        [MenuItem("Reality Toolkit/Packages/Install Interaction SDK Package Assets...", true)]
+        [MenuItem(MixedRealityPreferences.Editor_Menu_Keyword + "/Packages/Install Interaction SDK Package Assets...", true)]
         private static bool ImportPackageAssetsValidation()
         {
             return !Directory.Exists($"{DefaultPath}{Path.DirectorySeparatorChar}");
         }
 
-        [MenuItem("Reality Toolkit/Packages/Install Interaction SDK Package Assets...")]
+        [MenuItem(MixedRealityPreferences.Editor_Menu_Keyword + "/Packages/Install Interaction SDK Package Assets...")]
         private static void ImportPackageAssets()
         {
             EditorPreferences.Set($"{nameof(InteractionSDKPackageInstaller)}.Assets", false);
