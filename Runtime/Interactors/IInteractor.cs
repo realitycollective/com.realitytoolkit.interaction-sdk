@@ -14,5 +14,10 @@ namespace RealityToolkit.InteractionSDK.Interactors
         /// The registered <see cref="IMixedRealityInputSource"/> for this interactor.
         /// </summary>
         IMixedRealityInputSource InputSource { get; }
+
+        /// <summary>
+        /// The <see cref="IMixedRealityPointer"/> currently active on the <see cref="IInteractor"/>.
+        /// </summary>
+        IMixedRealityPointer Pointer { get; }
     }
 }

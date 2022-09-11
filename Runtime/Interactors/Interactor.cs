@@ -22,6 +22,9 @@ namespace RealityToolkit.InteractionSDK.Interactors
         /// <inheritdoc/>
         public IMixedRealityInputSource InputSource { get; set; }
 
+        /// <inheritdoc/>
+        public IMixedRealityPointer Pointer { get; set; }
+
         /// <summary>
         /// Executed when the <see cref="Interactor"/> is loaded the first time.
         /// </summary>a
@@ -57,11 +60,13 @@ namespace RealityToolkit.InteractionSDK.Interactors
                     pointer.Result.CurrentPointerTarget.TryGetComponent<Interactable>(out var interactable))
                 {
                     focusedInteractables.EnsureDictionaryItem(pointer.PointerId, interactable, true);
+                    Pointer = pointer;
                     interactable.OnFocused(this);
                 }
                 else if (focusedInteractables.TryGetValue(pointer.PointerId, out var unfocusedInteractable))
                 {
                     unfocusedInteractable.OnUnfocused(this);
+                    Pointer = null;
                     focusedInteractables.SafeRemoveDictionaryItem(pointer.PointerId);
                 }
             }

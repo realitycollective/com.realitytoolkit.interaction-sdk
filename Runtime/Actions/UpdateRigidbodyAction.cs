@@ -28,6 +28,11 @@ namespace RealityToolkit.InteractionSDK.Actions
         /// <inheritdoc/>
         public override void OnStateChanged(InteractionState state)
         {
+            if (!Interactable.IsValid)
+            {
+                return;
+            }
+
             if (state == InteractionState.Selected)
             {
                 rigidbody.isKinematic = true;
