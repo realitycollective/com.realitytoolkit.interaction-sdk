@@ -56,10 +56,12 @@ namespace RealityToolkit.InteractionSDK.Interactors
             Interactor interactor = null;
             if (inputService.TryGetController(inputSource, out var controller))
             {
-                interactor = (Interactor)controller.Visualizer.GameObject.EnsureComponent(
+                var controllerInteractor = (ControllerInteractor)controller.Visualizer.GameObject.EnsureComponent(
                     controller is IMixedRealityHandController ?
                     typeof(HandControllerInteractor) :
                     typeof(ControllerInteractor));
+                controllerInteractor.Controller = controller;
+                interactor = controllerInteractor;
             }
             else
             {

@@ -1,6 +1,9 @@
 // Copyright (c) Reality Collective. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using RealityToolkit.InteractionSDK.Interactors;
+using System.Collections.Generic;
+
 namespace RealityToolkit.InteractionSDK.Interactables
 {
     /// <summary>
@@ -33,5 +36,18 @@ namespace RealityToolkit.InteractionSDK.Interactables
         /// The current <see cref="InteractionState"/> of the <see cref="IInteractable"/>.
         /// </summary>
         InteractionState State { get; }
+
+        /// <summary>
+        /// Gets the primary <see cref="IInteractor"/>. That is the first one
+        /// to start interaction with the <see cref="IInteractable"/>.
+        /// </summary>
+        /// <remarks><c>null</c> if not interacted with.</remarks>
+        IInteractor PrimaryInteractor { get; }
+
+        /// <summary>
+        /// Gets all <see cref="IInteractor"/>s currently interacting with the <see cref="IInteractable"/>.
+        /// </summary>
+        /// <remarks>Empty if not interacted with.</remarks>
+        IReadOnlyList<IInteractor> Interactors { get; }
     }
 }

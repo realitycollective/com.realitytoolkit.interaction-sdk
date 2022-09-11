@@ -6,8 +6,10 @@ using RealityCollective.ServiceFramework.Services;
 using RealityToolkit.EventDatum.Input;
 using RealityToolkit.InputSystem.Definitions;
 using RealityToolkit.InputSystem.Interfaces.Handlers;
+using RealityToolkit.InteractionSDK.Actions;
 using RealityToolkit.InteractionSDK.Interactors;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -37,6 +39,7 @@ namespace RealityToolkit.InteractionSDK.Interactables
         private IInteractionService interactionService;
         private readonly Dictionary<uint, IInteractor> focusingInteractors = new Dictionary<uint, IInteractor>();
         private readonly Dictionary<uint, IInteractor> selectingInteractors = new Dictionary<uint, IInteractor>();
+        private readonly List<IAction> actions = new List<IAction>();
 
         /// <inheritdoc/>
         public string Label
@@ -65,6 +68,11 @@ namespace RealityToolkit.InteractionSDK.Interactables
             }
         }
 
+        /// <inheritdoc/>
+        public IInteractor PrimaryInteractor => selectingInteractors.Values.FirstOrDefault();
+
+        public IReadOnlyList<IInteractor> Interactors => selectingInteractors.Values.ToList();
+
         /// <summary>
         /// Executed when the <see cref="Interactable"/> is loaded the first time.
         /// </summary>
@@ -85,6 +93,7 @@ namespace RealityToolkit.InteractionSDK.Interactables
             if (this == null) { return; }
 
             interactionService.Add(this);
+            actions.AddRange(GetComponentsInChildren<IAction>(true));
         }
 
         /// <summary>
@@ -146,6 +155,13 @@ namespace RealityToolkit.InteractionSDK.Interactables
             {
                 State = InteractionState.Normal;
             }
+
+            if (selectingInteractors.TryGetValue(interactor.InputSource.SourceId, out _))
+            {
+                // If an interactor that was interacting with the object has lost focus to it,
+                // then that is the same as ending the interaction.
+                OnDeselected(interactor);
+            }
         }
 
         /// <summary>
@@ -155,6 +171,11 @@ namespace RealityToolkit.InteractionSDK.Interactables
         {
             selectingInteractors.EnsureDictionaryItem(interactor.InputSource.SourceId, interactor, true);
             State = InteractionState.Selected;
+
+            for (var i = 0; i < actions.Count; i++)
+            {
+                actions[i].Activate();
+            }
         }
 
         /// <summary>
@@ -169,6 +190,11 @@ namespace RealityToolkit.InteractionSDK.Interactables
             }
 
             State = focusingInteractors.Count == 0 ? InteractionState.Normal : InteractionState.Focused;
+
+            for (var i = 0; i < actions.Count; i++)
+            {
+                actions[i].OnReset();
+            }
         }
 
         /// <inheritdoc/>

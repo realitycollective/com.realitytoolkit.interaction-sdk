@@ -1,6 +1,10 @@
 # Reality Toolkit - Interaction SDK
 
-TODO
+## About
+
+The interaction SDK is an extension to the [Reality Toolkit](https://realitytoolkit.io/) framework, an extensive collection of services, tools and utilities to develop cutting edge AR/VR/XR applications using the [Unity](https://www.unity3d.com) game engine.
+
+Use the interaction SDK to implement user interaction with virtual objects in your application or game.
 
 ## Requirements
 
@@ -9,7 +13,7 @@ TODO
 
 ## Getting Started
 
-TODO
+Check the [Documentation](Documentation~/Index.md) to get started implementing interactions.
 
 ### OpenUPM
 
