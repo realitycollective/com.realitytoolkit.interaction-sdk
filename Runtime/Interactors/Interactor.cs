@@ -3,6 +3,7 @@
 
 using RealityCollective.Extensions;
 using RealityCollective.ServiceFramework.Services;
+using RealityToolkit.InputSystem.Definitions;
 using RealityToolkit.InputSystem.Interfaces;
 using RealityToolkit.InteractionSDK.Interactables;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using UnityEngine;
 namespace RealityToolkit.InteractionSDK.Interactors
 {
     /// <summary>
-    /// An <see cref="Interactor"/> marks an object that can interact with <see cref="Interactables.IInteractable"/>s.
+    /// An <see cref="Interactor"/> marks an object that can interact with <see cref="IInteractable"/>s.
     /// </summary>
     [DisallowMultipleComponent]
     public class Interactor : MonoBehaviour, IInteractor
@@ -24,6 +25,12 @@ namespace RealityToolkit.InteractionSDK.Interactors
 
         /// <inheritdoc/>
         public IMixedRealityPointer Pointer { get; set; }
+
+        /// <inheritdoc/>
+        public bool NearInteractionEnabled => InputSource.TryGetPointer(PointerProximity.Near, out _);
+
+        /// <inheritdoc/>
+        public bool FarInteractionEnabled => InputSource.TryGetPointer(PointerProximity.Far, out _);
 
         /// <summary>
         /// Executed when the <see cref="Interactor"/> is loaded the first time.

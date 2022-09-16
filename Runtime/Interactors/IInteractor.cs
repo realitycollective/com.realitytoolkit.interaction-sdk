@@ -16,8 +16,13 @@ namespace RealityToolkit.InteractionSDK.Interactors
         IMixedRealityInputSource InputSource { get; }
 
         /// <summary>
-        /// The <see cref="IMixedRealityPointer"/> currently active on the <see cref="IInteractor"/>.
+        /// Does the <see cref="IInteractor"/> support near interaction?
         /// </summary>
-        IMixedRealityPointer Pointer { get; }
+        bool NearInteractionEnabled { get; }
+
+        /// <summary>
+        /// Does the <see cref="IInteractor"/> support far interaction?
+        /// </summary>
+        bool FarInteractionEnabled { get; }
     }
 }

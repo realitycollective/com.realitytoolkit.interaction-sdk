@@ -17,7 +17,7 @@ namespace RealityToolkit.InteractionSDK.Actions
         /// </summary>
         private void Update()
         {
-            var interactorPosition = primaryInteractor.Pointer.Result.EndPoint;
+            var interactorPosition = primaryInteractor.InputSource.InteractingPointer.Result.EndPoint;
             var delta = interactorPosition - previousInteractorPosition.Value;
             transform.Translate(delta);
             previousInteractorPosition = interactorPosition;
@@ -38,7 +38,7 @@ namespace RealityToolkit.InteractionSDK.Actions
             if (state == InteractionState.Selected)
             {
                 this.primaryInteractor = primaryInteractor;
-                previousInteractorPosition = primaryInteractor.Pointer.Result.EndPoint;
+                previousInteractorPosition = primaryInteractor.InputSource.InteractingPointer.Result.EndPoint;
                 enabled = true;
             }
             else
