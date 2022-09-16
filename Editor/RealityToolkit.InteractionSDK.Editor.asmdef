@@ -2,9 +2,12 @@
     "name": "RealityToolkit.InteractionSDK.Editor",
     "rootNamespace": "RealityToolkit.InteractionSDK.Editor",
     "references": [
+        "GUID:47b787928e4d48e4f8b351cc3ce236d0",
         "GUID:e67d30660ec243e4836aac191d3f36fb",
         "GUID:2a3f0ca4e21332c44bfdce311ea8943e",
-        "GUID:b2d046948d6452a4b8485efc9ce0f88c"
+        "GUID:b2d046948d6452a4b8485efc9ce0f88c",
+        "GUID:13703f41b24bb904cb2305abe6317e3d",
+        "GUID:f3241d040533491e8a1e2714b27c3111"
     ],
     "includePlatforms": [
         "Editor"
